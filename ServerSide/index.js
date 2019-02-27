@@ -74,6 +74,14 @@ app.get('/user/:email/:password', (req, res) => {
   });
 })
 
+app.post('/user', (req, res) => {
+  const userToAdd = req.body;
+  let addDoc = db.collection('users').add(userToAdd).then(ref => {
+    console.log('Added user with ID: ', ref.id);
+  });
+  res.send();
+});
+
 app.get('/events/getByTags', (req, res) => {
   let tags = ['catch'];
   
