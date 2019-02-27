@@ -12,8 +12,14 @@ var config = {
 firebase.initializeApp(config);
 const port = 3000
 
+const db = firebase.firestore();
+
 //app.get('/', (req, res) => {
-//
+   
 //})
+
+app.post('/tags', req, res => {
+
+})
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
