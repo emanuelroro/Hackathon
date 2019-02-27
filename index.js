@@ -18,7 +18,7 @@ const db = firebase.firestore();
    
 //})
 
-app.post('/tags', req, res => {
+app.post('/tags', (req, res) => {
 
 })
 
