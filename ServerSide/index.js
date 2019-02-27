@@ -14,9 +14,6 @@ firebase.initializeApp(config);
 const port = 3000
 const db = firebase.firestore();
 
-//app.get('/', (req, res) => {
- // res.send("hello world");
-//})
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
