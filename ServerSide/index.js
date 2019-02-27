@@ -23,4 +23,57 @@ app.post('/event', (req, res) => {
       });
 })
 
+app.get('/events/getByTags', (req, res) => {
+  let tags = ['catch'];
+  
+  let wantedEvents = [];
+  let eventsDb = db.collection('events');
+  const events = eventsDb.get().then((snapShot) => {
+    
+    snapShot.forEach((eve) => {
+      if(conaitnsArr(eve.data().tags, tags)) {
+        wantedEvents.push(eve.data());
+      }
+    });
+
+    res.send(wantedEvents);
+  }).catch(err => {
+    console.log('Error getting documents', err);
+  });
+
+});
+
+function conaitnsArr(eventTags, searchedTags) {
+  let conaints = true;
+  searchedTags.forEach((event) => {
+
+    if (!eventTags.includes(event)) {
+      conaints = false;
+    }
+  });
+
+  return (conaints);
+}
+
+
+app.get('/events/getByTitle', (req, res) => {
+
+    let searchedTitle = "";
+    let eventsDb = db.collection('events');
+    let wantedEvents = [];
+    const events = eventsDb.get().then((snapShot) => {
+      
+      snapShot.forEach((eve) => {
+        if(eve.data().title.includes(searchedTitle)) {
+          wantedEvents.push(eve.data());
+        }
+      });
+
+      res.send(wantedEvents);
+    }).catch(err => {
+      console.log('Error getting documents', err);
+    });
+
+});
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
