@@ -49,8 +49,8 @@ function addTags(tagsToAdd) {
     })
 }
 
-app.get('/user', (req, res) => {
-  const currUser = req.body;
+app.get('/user/:email/:password', (req, res) => {
+  const currUser = req.params;
   var usersRef = db.collection('users');
   var query = usersRef.where('email', '==', currUser.email).get()
   .then(users => {
@@ -59,8 +59,9 @@ app.get('/user', (req, res) => {
       res.send("No matching users.");
     }
     users.forEach(user => {
-      if (user.password === currUser.password) {
-        res.send(user);
+      console.log(user.data().password );
+      if (user.data().password === currUser.password) {
+        res.send(user.data());
       }
       else {
         res.send("password incorrect");
