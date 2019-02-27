@@ -1,4 +1,5 @@
 const express = require('express')
+const bodyParser = require("body-parser");
 const app = express()
 const firebase = require("firebase");
 var config = {
@@ -12,15 +13,65 @@ var config = {
 firebase.initializeApp(config);
 const port = 3000
 const db = firebase.firestore();
+
 //app.get('/', (req, res) => {
-//
+ // res.send("hello world");
 //})
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.post('/event', (req, res) => {
-    const event = req.body.event;
+    const event = req.body;
+    addTags(event.tags)
     let addDoc = db.collection('events').add(event).then(ref => {
         console.log('Added document with ID: ', ref.id);
-      });
+    });
+    res.send();
+})
+
+app.delete('/event', (req, res) => {
+    const event = req.body;
+    let deleteDoc = db.collection('events').doc(event.id).delete();
+    res.send();
+})
+
+function addTags(tagsToAdd) {
+    tagsToAdd.forEach((tag) => {
+        let newAmount = 1;
+        const tagsRef = db.collection('tags').doc(tag);
+        const getDoc = tagsRef.get()
+        .then(doc => {   
+        if (doc.exists) {
+          newAmount += doc.data().amount;   
+        }
+        tagsRef.set({amount: newAmount});
+        })
+    })
+}
+
+app.get('/user/:email/:password', (req, res) => {
+  const currUser = req.params;
+  var usersRef = db.collection('users');
+  var query = usersRef.where('email', '==', currUser.email).get()
+  .then(users => {
+    if (users.empty) {
+      console.log('No matching users.');
+      res.send("No matching users.");
+    }
+    users.forEach(user => {
+      console.log(user.data().password );
+      if (user.data().password === currUser.password) {
+        res.send(user.data());
+      }
+      else {
+        res.send("password incorrect");
+      }
+    });
+  })
+  .catch(err => {
+    console.log('Error getting documents', err);
+    res.send("Error getting users");
+  });
 })
 
 app.get('/events/getByTags', (req, res) => {
