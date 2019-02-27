@@ -29,13 +29,18 @@ app.post('/event', (req, res) => {
     res.send();
 })
 
+app.delete('/event', (req, res) => {
+    const event = req.body;
+    let deleteDoc = db.collection('events').doc(event.id).delete();
+    res.send();
+})
+
 function addTags(tagsToAdd) {
     tagsToAdd.forEach((tag) => {
         let newAmount = 1;
         const tagsRef = db.collection('tags').doc(tag);
         const getDoc = tagsRef.get()
-        .then(doc => {
-          
+        .then(doc => {   
         if (doc.exists) {
           newAmount += doc.data().amount;   
         }
