@@ -49,4 +49,28 @@ function addTags(tagsToAdd) {
     })
 }
 
+app.get('/user', (req, res) => {
+  const currUser = req.body;
+  var usersRef = db.collection('users');
+  var query = usersRef.where('email', '==', currUser.email).get()
+  .then(users => {
+    if (users.empty) {
+      console.log('No matching users.');
+      res.send("No matching users.");
+    }
+    users.forEach(user => {
+      if (user.password === currUser.password) {
+        res.send(user);
+      }
+      else {
+        res.send("password incorrect");
+      }
+    });
+  })
+  .catch(err => {
+    console.log('Error getting documents', err);
+    res.send("Error getting users");
+  });
+})
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
