@@ -1,8 +1,0 @@
-{
-  "android": {
-    "v8Flags": "--expose_gc"
-  },
-  "main": "main",
-  "name": "seat_switch",
-  "version": "1.0.0"
-}
