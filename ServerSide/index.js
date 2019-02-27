@@ -11,15 +11,16 @@ var config = {
   };
 firebase.initializeApp(config);
 const port = 3000
-
 const db = firebase.firestore();
-
 //app.get('/', (req, res) => {
-   
+//
 //})
 
-app.post('/tags', (req, res) => {
-
+app.post('/event', (req, res) => {
+    const event = req.body.event;
+    let addDoc = db.collection('events').add(event).then(ref => {
+        console.log('Added document with ID: ', ref.id);
+      });
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
