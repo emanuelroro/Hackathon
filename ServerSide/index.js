@@ -80,8 +80,7 @@ app.post('/user', (req, res) => {
 });
 
 app.get('/events/getByTags', (req, res) => {
-  let tags = ['catch'];
-  
+  let tags = req.query.tags;
   let wantedEvents = [];
   let eventsDb = db.collection('events');
   const events = eventsDb.get().then((snapShot) => {
@@ -112,9 +111,9 @@ function conaitnsArr(eventTags, searchedTags) {
 }
 
 
-app.get('/events/getByTitle', (req, res) => {
+app.get('/events/getByTitle/:title', (req, res) => {
 
-    let searchedTitle = "";
+    let searchedTitle = req.params.title;
     let eventsDb = db.collection('events');
     let wantedEvents = [];
     const events = eventsDb.get().then((snapShot) => {
