@@ -1,15 +1,18 @@
 <template>
   <div id="app">
-   <h1> Seat Switch </h1>
-    </div>
+    <Navbar></Navbar>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
 
-
-export default {
-  name: 'app',
-  
+  import Navbar from './components/Navbar.vue'
+  export default {
+    name: 'app',
+    components: {
+      Navbar: Navbar
+    }
   }
 </script>
 
